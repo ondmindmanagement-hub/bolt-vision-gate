@@ -80,3 +80,7 @@ The AWS deployment itself must be performed from an authenticated AWS account. N
 ## Reproducibility
 
 Dependencies are pinned in `requirements.txt`, deterministic sample generation is provided by `make_sample.py`, and automated tests are in `tests/`.
+
+## Live AWS validation
+
+The proof of concept is deployed as an AWS Lambda function in the Stockholm (eu-north-1) region. The public function URL exposes /health and /analyze routes. Live validation returned opencv_version 5.0.0 and a structured human_review decision for a low-detail test image, demonstrating that the OpenCV 5 quality gate is executing in AWS rather than only locally.

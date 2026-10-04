@@ -49,3 +49,12 @@ A Dockerfile is included so the workload can be packaged for a container-based A
 
 Omar Baró — Founder, Unfire  
 https://unfire.technology
+
+## Live AWS endpoint
+
+Deployed on AWS Lambda in eu-north-1:
+
+- Health: https://j5l6mvh7b36zdsul3srkc73w6a0nsdnu.lambda-url.eu-north-1.on.aws/health
+- Analyze: POST JSON { "image_url": "https://..." } to https://j5l6mvh7b36zdsul3srkc73w6a0nsdnu.lambda-url.eu-north-1.on.aws/analyze
+
+Verified live with OpenCV 5.0.0 on AWS.
