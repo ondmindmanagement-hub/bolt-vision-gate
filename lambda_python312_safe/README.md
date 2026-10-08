@@ -29,7 +29,7 @@ curl -sS http://localhost:9000/2015-03-31/functions/function/invocations \
 
 ## Deployment gate — **DO NOT run until AWS IAM approval and dependent clients verified**
 
-- Read AWS Health > Affected resources in `eu-north-1` and list actual function ARNs and their runtime and package types.
+- Read AWS Health > Affected resources in `eu-north-1` and list actual function ARNs and their runtime and package types. After IAM credentials exist, run `bash lambda_python312_safe/audit_aws_readonly.sh` for a read-only inventory. The script deliberately refuses AWS root identity and never changes cloud resources.
 - This local Vision Gate code is a **candidate only**, not proof that it is the function mentioned in the AWS Health email.
 - Use an appropriately scoped **IAM role** (not AWS account root) to inspect code/configuration, environment variables, aliases and clients.
 - Review the breaking request contract and add required authentication, WAF/rate limits, payload pixel-size safeguards and logging before any public deployment.
