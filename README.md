@@ -1,5 +1,10 @@
 # BOLT Vision Gate — OpenCV AI Competition 2026
 
+[![OpenCV 5 verification](https://github.com/ondmindmanagement-hub/bolt-vision-gate/actions/workflows/verify-opencv5.yml/badge.svg?branch=main)](https://github.com/ondmindmanagement-hub/bolt-vision-gate/actions/workflows/verify-opencv5.yml)
+
+Public reproducibility: Python 3.12 / OpenCV 5.0.0 on GitHub-hosted Linux; 2 unit tests plus 2 synthetic low-quality-frame checks. These tests do **not** constitute independent safety certification or demonstrate deployment readiness.
+
+
 BOLT Vision Gate is a small OpenCV 5 proof of concept that places a visual-quality gate in front of an automated workflow.
 
 Before an autonomous workflow acts on an image, the gate checks whether the frame is visually reliable enough for automatic execution or should be escalated to a human.
