@@ -1,0 +1,58 @@
+name: Verify OpenCV 5 (no deployment)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "requirements.txt"
+      - ".github/workflows/verify-opencv5.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "requirements.txt"
+      - ".github/workflows/verify-opencv5.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-opencv5:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out only repository code
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Use Python 3.12
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install pinned OpenCV dependency as binary wheel only
+        run: |
+          python -m pip install --disable-pip-version-check --only-binary=:all: -r requirements.txt
+      - name: Verify dependency and existing unit tests
+        run: |
+          python -c "import cv2; print('OpenCV', cv2.__version__); assert cv2.__version__.startswith('5.')"
+          python -m unittest discover -s tests -v
+      - name: Synthetic reproducible image inputs (no private data)
+        run: |
+          python - <<'PY'
+          import json, numpy as np, cv2, sys
+          sys.path.insert(0, "src")
+          from vision_gate import analyze_frame
+          cases = [
+              ("dark", np.zeros((240, 320, 3), dtype=np.uint8), "human_review"),
+              ("overexposed", np.full((240, 320, 3), 255, dtype=np.uint8), "human_review"),
+          ]
+          for name, image, expected in cases:
+              result = analyze_frame(image)
+              print(json.dumps({"case": name, "opencv": result["opencv_version"],
+                               "decision": result["decision"], "reasons": result["reasons"]}))
+              assert result["decision"] == expected, f"{name}: {result}"
+          PY
